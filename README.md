@@ -12,4 +12,5 @@ place a random queen in a new random location
 _Crossover_:  
 take the left half of one board and the right half of the other.
 
-_Fitness Function_:
+_Fitness Function_:  
+how many queens are safe
