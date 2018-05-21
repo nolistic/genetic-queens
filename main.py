@@ -71,7 +71,7 @@ def crossover(board1, board2):
     return board1
 
 # set size of board
-boardSize = 4
+boardSize = 8
 
 # set size of population
 populationSize = 100
@@ -125,10 +125,8 @@ while bestScore != boardSize:
     for i in range(populationSize):
         scores[i] = (goodQueens(boards[i]), i)
 
-    print(scores)
     # sort by score
     scores.sort(reverse=True)
-    print(scores)
 
     # store best score
     bestScore = scores[0][0]
@@ -150,7 +148,9 @@ while bestScore != boardSize:
         breedingBoards[i] = crossover(breedingBoards[i], breedingBoards[i + 1])
 
     # prepare population for next generation
-
     boards = goodBoards + breedingBoards
+
+    # increment iteration
+    iteration += 1
 
 
