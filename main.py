@@ -1,3 +1,6 @@
+## Heather Nolis
+## 05/20/2018
+
 import random
 import copy
 
@@ -13,7 +16,7 @@ def goodQueens(board):
             if i != j:
                 # if the rows are not the same
                 if board[i][0] == board[j][0]:
-                        isSafe = False
+                    isSafe = False
                 #if the columns are not the same
                 if board[i][1] == board[j][1]:
                     isSafe = False
@@ -30,8 +33,8 @@ def goodQueens(board):
 # randomly move a single queen
 def mutate(board):
 
+    newBoard = copy.copy(board)
     queenNumber = random.randint(0, boardSize - 1)
-
 
     # pick a queen
     queen = board[queenNumber]
@@ -41,12 +44,13 @@ def mutate(board):
     row = random.randint(1, boardSize + 1)
 
     #delete the old queen
-    board[queenNumber] = (row,column)
+    newBoard[queenNumber] = (row,column)
 
-    return board
+    return newBoard
 
 # swap half the queens
 def crossover(board1, board2):
+
     # add a one if odd number
     odd = len(board1) % 2
 
@@ -71,7 +75,7 @@ def crossover(board1, board2):
     return board1
 
 # set size of board
-boardSize = 8
+boardSize = 16
 
 # set size of population
 populationSize = 100
@@ -110,19 +114,11 @@ iteration = 1
 while bestScore != boardSize:
     print("Iteration: " + str(iteration))
 
-    #calculate how many good boards to keep
-    # add a one if odd number
-    odd = populationSize % 2
-
-    # split place
-    numGoodBoards = populationSize // 2 + odd
-
-    # set up good boards
-    goodBoards = [(0, 0)]*numGoodBoards
-
+    # get ready to save the best boards
+    goodBoards = []
 
     # score all of the boards
-    for i in range(populationSize):
+    for i in range(len(boards)):
         scores[i] = (goodQueens(boards[i]), i)
 
     # sort by score
@@ -132,25 +128,33 @@ while bestScore != boardSize:
     bestScore = scores[0][0]
     print("Best Score: " + str(bestScore))
 
-    # take the boards with the best 50 scores
-    for i in range(numGoodBoards):
-        goodBoards[i] = boards[scores[i][1]]
+    sum = 0
 
-    # copy good boards
-    breedingBoards = copy.copy(goodBoards)
+    # calculate the average score
+    for i in range(populationSize):
+        sum += scores[i][0]
 
-    # send all breeding boards through genetics
-    for i in range(numGoodBoards - 1):
+    # print average score
+    print("Average Score: " + str(sum/populationSize))
+
+    # take the boards with the best 1/2 scores
+    for i in range(populationSize // 2):
+        goodBoards.append(boards[scores[i][1]])
+
+    # reset boards
+    boards = copy.copy(goodBoards)
+
+    # take half good boards and mutate them
+    for i in range(populationSize//4):
         # mutate
-        breedingBoards[i] = mutate(breedingBoards[i])
+        boards.append(mutate(goodBoards[i]))
 
-        # crossover
-        breedingBoards[i] = crossover(breedingBoards[i], breedingBoards[i + 1])
-
-    # prepare population for next generation
-    boards = goodBoards + breedingBoards
+    # and crossover some more
+    for i in range(populationSize//4):
+        boards.append(crossover(goodBoards[random.randint(0, populationSize // 2 - 1)], goodBoards[random.randint(0, populationSize // 2 - 1)]))
 
     # increment iteration
     iteration += 1
 
+print(boards[1])
 
