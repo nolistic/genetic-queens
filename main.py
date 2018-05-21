@@ -29,18 +29,18 @@ def goodQueens(board):
 # randomly move a single queen
 def mutate(board):
 
-    queenNumber = random.randint(0, boardSize)
+    queenNumber = random.randint(0, boardSize - 1)
+
 
     # pick a queen
     queen = board[queenNumber]
 
     # move the queen to a new row
     column =  random.randint(1, boardSize + 1)
-    row = random.randomint(1, boardSize + 1)
+    row = random.randint(1, boardSize + 1)
 
     #delete the old queen
-    board[queenNumber][0] = row
-    board[queenNumber][1] = column
+    board[queenNumber] = (row,column)
 
     return board
 
@@ -74,5 +74,5 @@ for j in range(populationSize):
     boards += [board]
 
 testBoard = [(1,3), (2,1), (3,4), (4, 2)]
-result = goodQueens(testBoard)
-print(result)
+print(testBoard)
+print(mutate(testBoard))
