@@ -1,7 +1,8 @@
 # genetic-queens
 solving the n-queens problem with a genetic algorithm
 
-#####Algorithm Details
+##### Algorithm Details
+
 _Chromosome encoding:_  
 Each queen location is a tuple of x and y coordinates. 
 
