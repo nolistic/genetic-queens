@@ -44,6 +44,31 @@ def mutate(board):
 
     return board
 
+# swap half the queens
+def crossover(board1, board2):
+    # add a one if odd number
+    odd = len(board1) % 2
+
+    # split place
+    split = len(board1) // 2 + odd
+
+    # shuffle the order of the queens to prevent getting stuck
+    random.shuffle(board1)
+    random.shuffle(board2)
+
+    #split the queens from each board in half
+    board1left = board1[0:split]
+    board1right = board1[split:len(board1)]
+
+    board2left = board2[0:split]
+    board2right = board2[split:len(board2)]
+
+    #combine them
+    board1 = board1left + board2right
+    board2 = board2left + board1right
+
+    return board1, board2
+
 # set size of board
 boardSize = 4
 
@@ -73,6 +98,8 @@ for j in range(populationSize):
 
     boards += [board]
 
-testBoard = [(1,3), (2,1), (3,4), (4, 2)]
-print(testBoard)
-print(mutate(testBoard))
+testBoard1 = [(0,0), (0,0), (0,0), (0, 0)]
+testBoard2 = [(1,1), (2,1), (3,1), (4,1)]
+print(testBoard1)
+print(testBoard2)
+print(crossover(testBoard1, testBoard2))
