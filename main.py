@@ -26,6 +26,24 @@ def goodQueens(board):
 
     return score
 
+# randomly move a single queen
+def mutate(board):
+
+    queenNumber = random.randint(0, boardSize)
+
+    # pick a queen
+    queen = board[queenNumber]
+
+    # move the queen to a new row
+    column =  random.randint(1, boardSize + 1)
+    row = random.randomint(1, boardSize + 1)
+
+    #delete the old queen
+    board[queenNumber][0] = row
+    board[queenNumber][1] = column
+
+    return board
+
 # set size of board
 boardSize = 4
 
