@@ -1,4 +1,5 @@
 import random
+import copy
 
 # given a board, this function returns the number of good queens
 def goodQueens(board):
@@ -67,7 +68,7 @@ def crossover(board1, board2):
     board1 = board1left + board2right
     board2 = board2left + board1right
 
-    return board1, board2
+    return board1
 
 # set size of board
 boardSize = 4
@@ -98,8 +99,58 @@ for j in range(populationSize):
 
     boards += [board]
 
-testBoard1 = [(0,0), (0,0), (0,0), (0, 0)]
-testBoard2 = [(1,1), (2,1), (3,1), (4,1)]
-print(testBoard1)
-print(testBoard2)
-print(crossover(testBoard1, testBoard2))
+
+scores = [(0, 0)]*populationSize
+
+
+bestScore = 0
+iteration = 1
+
+# run genetic algorithm
+while bestScore != boardSize:
+    print("Iteration: " + str(iteration))
+
+    #calculate how many good boards to keep
+    # add a one if odd number
+    odd = populationSize % 2
+
+    # split place
+    numGoodBoards = populationSize // 2 + odd
+
+    # set up good boards
+    goodBoards = [(0, 0)]*numGoodBoards
+
+
+    # score all of the boards
+    for i in range(populationSize):
+        scores[i] = (goodQueens(boards[i]), i)
+
+    print(scores)
+    # sort by score
+    scores.sort(reverse=True)
+    print(scores)
+
+    # store best score
+    bestScore = scores[0][0]
+    print("Best Score: " + str(bestScore))
+
+    # take the boards with the best 50 scores
+    for i in range(numGoodBoards):
+        goodBoards[i] = boards[scores[i][1]]
+
+    # copy good boards
+    breedingBoards = copy.copy(goodBoards)
+
+    # send all breeding boards through genetics
+    for i in range(numGoodBoards - 1):
+        # mutate
+        breedingBoards[i] = mutate(breedingBoards[i])
+
+        # crossover
+        breedingBoards[i] = crossover(breedingBoards[i], breedingBoards[i + 1])
+
+    # prepare population for next generation
+
+    boards = goodBoards + breedingBoards
+
+
