@@ -5,27 +5,26 @@ def goodQueens(board):
     score = 0
 
     #for every item in the board
-    for i in range(len(board) - 1):
+    for i in range(len(board)):
         isSafe = True
         # check all other items
-        for j in range(len(board) -1):
-            if i == j:
-                isSafe = False
-            # if the rows are not the same
-            if board[i][0] == board[j][0]: \
+        for j in range(len(board)):
+            if i != j:
+                # if the rows are not the same
+                if board[i][0] == board[j][0]:
+                        isSafe = False
+                #if the columns are not the same
+                if board[i][1] == board[j][1]:
                     isSafe = False
-            #if the columns are not the same
-            if board[i][1] == board[j][1]:
-                isSafe = False
-            #if they are not on a diagonal
-            if abs(board[i][1] - board[j][1]) == abs(board[i][0] - board[j][0]):
-                isSafe = False
+                #if they are not on a diagonal
+                if abs(board[i][1] - board[j][1]) == abs(board[i][0] - board[j][0]):
+                    isSafe = False
 
         #if none of those conditions are met, score++
         if isSafe == True:
             score += 1
 
-        return score
+    return score
 
 # set size of board
 boardSize = 4
@@ -56,6 +55,6 @@ for j in range(populationSize):
 
     boards += [board]
 
-testBoard = [(1,1), (2,1), (3,4), (4, 2)]
+testBoard = [(1,3), (2,1), (3,4), (4, 2)]
 result = goodQueens(testBoard)
 print(result)
